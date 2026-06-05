@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Labican</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <main class="app-shell">
+    <nav class="navbar">
+      <div class="brand">
+        <div>
+          <h1>Labican</h1>
+          <p>Latihan Bicara Spontan</p>
+        </div>
+      </div>
+      <div class="nav-badge">NextHer</div>
+    </nav>
+
+    <section class="hero-grid">
+      <div class="hero-card glass-card">
+        <div class="eyebrow">Latihan bicara spontan</div>
+        <h2>Bangun keberanian ngomong</h2>
+        <p>
+          Klik Start, dapatkan topik acak, lalu bicara sampai timer habis.
+          Cocok untuk latihan presentasi, interview, debat, story telling, dan improvisasi.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-btn" id="heroStartBtn">Mulai Latihan</button>
+          <a href="#trainer" class="ghost-btn">Atur Sesi</a>
+        </div>
+      </div>
+
+      <div class="stats-card glass-card">
+        <div class="mini-label">Session Preview</div>
+        <div class="preview-orb">
+          <span id="previewSeconds">60</span>
+          <small>sec</small>
+        </div>
+        <div class="preview-list">
+          <div><span>Mode</span><strong id="previewMode">Random Mix</strong></div>
+          <div><span>Jumlah Topik</span><strong id="previewRounds">5 rounds</strong></div>
+          <div><span>Status</span><strong>Ready</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trainer-layout" id="trainer">
+      <aside class="control-panel glass-card">
+        <div class="section-heading">
+          <span>Setup</span>
+          <h3>Atur latihanmu</h3>
+        </div>
+
+        <label class="field-group">
+          <span>Mode Topik</span>
+          <select id="modeSelect">
+            <option value="mix">Random Mix</option>
+            <option value="word">Satu Kata</option>
+            <option value="sentence">Satu Kalimat</option>
+            <option value="deep">Deep Thinking</option>
+            <option value="fun">Fun & Absurd</option>
+          </select>
+        </label>
+
+        <label class="field-group">
+          <span>Durasi per Topik</span>
+          <select id="durationSelect">
+            <option value="30">30 detik</option>
+            <option value="45">45 detik</option>
+            <option value="60" selected>60 detik</option>
+            <option value="90">90 detik</option>
+            <option value="120">120 detik</option>
+          </select>
+        </label>
+
+        <label class="field-group">
+          <span>Jumlah Ronde</span>
+          <select id="roundSelect">
+            <option value="3">3 ronde</option>
+            <option value="5" selected>5 ronde</option>
+            <option value="7">7 ronde</option>
+            <option value="10">10 ronde</option>
+          </select>
+        </label>
+
+        <label class="field-group">
+          <span>Custom Topik</span>
+          <textarea id="customTopics" placeholder="Opsional. Tulis topik sendiri, pisahkan dengan enter.&#10;Contoh:&#10;Keberanian&#10;Kenapa manusia takut gagal?&#10;AI di masa depan"></textarea>
+        </label>
+
+        <button class="secondary-btn" id="shuffleBtn">Acak Topik Baru</button>
+      </aside>
+
+      <section class="main-trainer glass-card">
+        <div class="trainer-topbar">
+          <div>
+            <span class="mini-label">Current Prompt</span>
+            <h3 id="roundTitle">Belum dimulai</h3>
+          </div>
+          <div class="round-pill"><span id="currentRound">0</span>/<span id="totalRounds">5</span></div>
+        </div>
+
+        <div class="timer-ring" id="timerRing">
+          <svg viewBox="0 0 220 220">
+            <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
+            <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="96"></circle>
+          </svg>
+          <div class="timer-content">
+            <strong id="timeText">60</strong>
+            <span>detik</span>
+          </div>
+        </div>
+
+        <article class="prompt-card" id="promptCard">
+          <p id="promptText">Tekan Start untuk mendapatkan topik pertama.</p>
+        </article>
+
+        <div class="hint-box">
+          <span>Tips bicara:</span>
+          <p id="speakingHint">Pakai pola sederhana: pembuka → alasan → contoh → penutup.</p>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-btn" id="startBtn">Start</button>
+          <button class="ghost-btn" id="pauseBtn" disabled>Pause</button>
+          <button class="ghost-btn" id="nextBtn" disabled>Next</button>
+          <button class="danger-btn" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <aside class="progress-panel glass-card">
+        <div class="section-heading">
+          <span>Progress</span>
+          <h3>Ringkasan sesi</h3>
+        </div>
+        <div class="score-grid">
+          <div>
+            <span>Selesai</span>
+            <strong id="finishedCount">0</strong>
+          </div>
+          <div>
+            <span>Total Waktu</span>
+            <strong id="totalTime">0m</strong>
+          </div>
+        </div>
+        <div class="history-box">
+          <h4>Topik yang keluar</h4>
+          <ul id="historyList">
+            <li class="empty-state">Belum ada topik.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="feature-grid">
+      <div class="feature-card glass-card">
+        <span>01</span>
+        <h3>Spontaneous Drill</h3>
+        <p>Melatih otak agar cepat menyusun kalimat dari kata random.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <span>02</span>
+        <h3>Timer Pressure</h3>
+        <p>Tekanan waktu membuat latihan terasa seperti situasi asli.</p>
+      </div>
+      <div class="feature-card glass-card">
+		  <span>03</span>
+		  <h3>self-confident</h3>
+		  <p>Membangun percaya diri secara perlahan</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Waktu habis. Lanjut ke topik berikutnya!</div>
+  <script src="script.js"></script>
+</body>
+</html>
